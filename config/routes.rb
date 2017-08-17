@@ -1,4 +1,5 @@
 SampleApp::Application.routes.draw do
+  get "admin_users/show"
   devise_for :users, :controllers => {
     :registrations => "registrations"
   }
@@ -8,6 +9,10 @@ SampleApp::Application.routes.draw do
       get :following, :followers
     end
   end
+
+ devise_for :admin_users
+ resources:admin_users, only:[:show,:index,:destroy,]
+
 
   resources :microposts,    only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
