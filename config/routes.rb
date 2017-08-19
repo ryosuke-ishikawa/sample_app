@@ -10,7 +10,12 @@ SampleApp::Application.routes.draw do
     end
   end
 
- devise_for :admin_users
+ devise_for :admin_users,:controllers => {
+   registrations: 'admin_users/registrations',
+   sessions:      'admin_users/sessions'
+ }
+ 
+ 
  resources:admin_users, only:[:show,:index,:destroy,]
 
 
