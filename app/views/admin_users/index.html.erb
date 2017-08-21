@@ -1,0 +1,15 @@
+<% provide(:title, 'All admin_users') %>
+<h1>All Admin_users</h1>
+
+<%= will_paginate renderer: BootstrapPagination::Rails %>
+
+<ul class="users">
+  <% @admin_users.each do |admin_user| %>
+    <li>
+      <%= gravatar_for admin_user, size: 52 %>
+      <%= link_to admin_user.name, admin_user %>
+    </li>
+  <% end %>
+</ul>
+
+<%= will_paginate renderer: BootstrapPagination::Rails %>

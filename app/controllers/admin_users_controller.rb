@@ -1,5 +1,6 @@
 class AdminUsersController < ApplicationController
-  before_action :authenticate_admin_user!, :except=>[:show]
+  before_action :authenticate_admin_user!
+  
   def show
     @admin_user = AdminUser.find(params[:id])
   end
@@ -10,6 +11,9 @@ class AdminUsersController < ApplicationController
     redirect_to admin_users_url
   end
   
+  def index
+   @admin_users = AdminUser.paginate(page: params[:page],per_page:2)
+  end
   
   
 end
