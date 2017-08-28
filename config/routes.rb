@@ -1,5 +1,5 @@
 SampleApp::Application.routes.draw do
-  get "admin_users/show"
+  
   devise_for :users, :controllers => {
     :registrations => "registrations"
   }
@@ -10,16 +10,16 @@ SampleApp::Application.routes.draw do
     end
   end
 
- devise_for :admin_users,:controllers => {
-   registrations: 'admin_users/registrations',
+ devise_for :admin_users, only: [:session, :password], :controllers => {
    sessions:      'admin_users/sessions'
  }
  
+ get "admin_users/micropost"
+ resources:admin_users, only:[:show,:index,:destroy,:edit,:update,:create,:new,]
+  
  
- resources:admin_users, only:[:show,:index,:destroy,]
-
-
-  resources :microposts,    only: [:create, :destroy]
+  
+  resources :microposts,    only: [:create, :destroy, :edit,:update]
   resources :relationships, only: [:create, :destroy]
 
   root  'static_pages#home'

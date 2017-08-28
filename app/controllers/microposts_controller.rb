@@ -1,5 +1,5 @@
 class MicropostsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except=>[:edit,:update]
   before_action :correct_user,   only: :destroy
   
   def create
@@ -11,8 +11,6 @@ class MicropostsController < ApplicationController
       @feed_item = []
       render 'static_pages/home'
     end
-      
-      
   end
 
   def destroy
@@ -20,10 +18,28 @@ class MicropostsController < ApplicationController
     redirect_to root_url
   end
   
+  def edit
+    @micropost = Micropost.find(params[:id])
+  end
+  
+  def update
+    @micropost = Micropost.find(params[:id])
+    if @micropost.update_attributes(micropost_params)
+      redirect_to admin_users_micropost_url
+    else
+      render 'edit'
+    end
+  end
+  
+  
   private
 
     def micropost_params
-     params.require(:micropost).permit(:content)
+     if admin_user_signed_in?
+      params.require(:micropost).permit(:content,:public)
+     else
+      params.require(:micropost).permit(:content)
+     end
     end
     
     def correct_user
