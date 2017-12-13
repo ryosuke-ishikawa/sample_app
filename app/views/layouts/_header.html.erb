@@ -23,16 +23,17 @@
             </li>
             
           <% elsif admin_user_signed_in? %>
-            <li><%= link_to "投稿一覧", admin_users_micropost_path %></li>          
-            <li><%= link_to "管理者一覧", admin_users_path %></li>
+            <li><%= link_to "投稿一覧", admin_microposts_path %></li>
+            <li><%= link_to "ユーザー一覧", admin_users_path %></li>
+            <li><%= link_to "管理者一覧", admin_admin_users_path %></li>
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 設定 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><%= link_to "Profile", current_admin_user %></li>
-                <li><%= link_to "Settings", edit_admin_user_path(current_admin_user) %></li>
-                <li><%= link_to "Create", new_admin_user_path %></li>
+                <li><%= link_to "Profile", admin_admin_user_path(current_admin_user) %></li>
+                <li><%= link_to "Settings", edit_admin_admin_user_path(current_admin_user) %></li>
+                <li><%= link_to "Create", new_admin_admin_user_path %></li>
                 <li class="divider"></li>
                 <li>
                   <%= link_to "Sign out", destroy_admin_user_session_path, method: "delete" %>

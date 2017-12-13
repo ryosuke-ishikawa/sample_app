@@ -22,8 +22,9 @@
    <% if @user.microposts.any? %>
     <h3>Microposts (<%= @user.microposts.count %>)</h3>
     <ol class="microposts">
-      <%= render @microposts %>
+      <%= render @microposts,html:{ multipart: true} %>
     </ol>
+
     <%= will_paginate @microposts, renderer: BootstrapPagination::Rails %>
    <% end %>
   </div>

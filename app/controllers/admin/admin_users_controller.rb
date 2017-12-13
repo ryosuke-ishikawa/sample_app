@@ -1,5 +1,4 @@
-class AdminUsersController < ApplicationController
-  before_action :authenticate_admin_user!
+class Admin::AdminUsersController < Admin::AdminApplicationController
   before_action :owner,     only:[:destroy,:new,:create]
 
   def show
@@ -44,17 +43,16 @@ class AdminUsersController < ApplicationController
     end
   end
   
-  def micropost
-    if admin_user_signed_in?
-      @microposts = Micropost.paginate(page: params[:page])
-    end
-  end
+
+  
+
+
   
   def feed
     Micropost.all
   end
   
-
+  
 
   private
 

@@ -1,0 +1,27 @@
+<% unless current_user == micropost.user %>
+ <% if current_user.already_liked?(micropost) %>
+    <%= button_to like_path(micropost, format: :js), method: :delete, remote: true do %>
+      <%= image_tag("icon_red_heart.png") %>
+      <span>
+        <%= micropost.likes_count %>
+      </span>
+    <% end %>
+ <% else %>
+    <%= button_to likes_path(micropost_id: micropost, format: :js), method: :post, remote: true do %>
+     <%= image_tag("icon_heart.png") %>
+     <span>
+         <%= micropost.likes_count %>
+     </span>
+    <% end %>
+ <% end %>
+<% end %>
+
+
+
+<%# unless current_user == micropost.user %>
+ <%# if current_user.already_liked?(micropost) %>
+      <%#= link_to "いいねを取り消す", like_path(micropost, format: :js), method: :delete, remote: true, class: 'btn btn-xs btn-warning' %>
+<%# else %>
+    <%#= link_to "いいね！", likes_path(micropost_id: micropost, format: :js), method: :post, remote: true, class: 'btn btn-xs btn-warning' %>
+ <%# end %>
+<%# end %>

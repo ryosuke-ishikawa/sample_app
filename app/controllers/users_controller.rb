@@ -8,8 +8,14 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    @microposts = @user.microposts.paginate(page: params[:page])
+    if @user == current_user
+      @microposts = @user.microposts.paginate(page: params[:page])
+    else
+      @microposts = @user.microposts.where("microposts.public = 't'").paginate(page: params[:page])
+    end
+    @likes = Like.where(micropost_id: params[:micropost_id])
   end
+
   
   
   def destroy

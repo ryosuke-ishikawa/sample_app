@@ -1,0 +1,8 @@
+<% if micropost.public %>
+  <%= link_to "非公開", admin_public_off_path(micropost), method: :patch, remote: true, class: 'btn btn-xs btn-warning' %>  
+<% else %>
+  <%= link_to "公開", admin_public_on_path(micropost), method: :patch, remote: true, class: 'btn btn-xs btn-warning' %>
+ <% end %>
+ 
+
+ 

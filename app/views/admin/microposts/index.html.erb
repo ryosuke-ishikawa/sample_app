@@ -1,0 +1,32 @@
+<%= provide(:title, "micropost一覧") %>
+<div class="row">
+    
+  <div class="col-md-8">
+    <h3>Micropost検索機能</h3>
+      <%= form_for @search_form, as: 'search', url: admin_microposts_path, html: {method: :get} do |f| %>
+        <%= f.label :user_name, "ユーザー検索" %>
+        <%= f.text_field :user_name %>
+        <%= f.label :user_option, "オプション検索" %>
+        <%= f.select :user_option, options_for_select({"選択しない" => "default",
+                                                       "ユーザーをフォローしているユーザーの投稿" => "followed_user",
+                                                       "ユーザーの投稿にいいねをしたユーザーの投稿" => "liked_user",
+                                                       "ユーザーがフォローしているユーザーがいいねした投稿" => "follow_like",
+                                                       "ユーザーがいいねをした投稿のユーザーがいいねをした投稿" => "liking_liking"
+        },
+        :selected => params[:search].nil? ? "default" : params[:search][:user_option] )%>
+        <%= f.label :public, "公開状態絞込" %>
+        <%= f.select :public, options_for_select({"全て" => "default", "公開のみ" => "true", "非公開のみ" => "false" },
+        :selected => params[:search].nil? ? "default" : params[:search][:public]  )%>
+        <%= f.submit "検索" %>
+      <% end %>
+      
+      
+      <h3>Microposts (<%= @search_form.search.count %>)</h3>
+       <ol class="microposts">
+        <% @microposts.each do |micropost| %>
+          <%= render '/microposts/micropost', micropost: micropost %>
+        <% end %>
+      </ol>
+      <%= will_paginate @microposts, renderer: BootstrapPagination::Rails %>
+  </div>
+</div>

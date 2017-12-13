@@ -1,26 +1,47 @@
 SampleApp::Application.routes.draw do
   
+  get "users/index"
+  get "users/edit"
+  get "users/update"
+  get "users/destroy"
   devise_for :users, :controllers => {
     :registrations => "registrations"
   }
+  
   
   resources :users, only: [:show, :index, :destroy] do
     member do
       get :following, :followers
     end
   end
+  resources :likes, only: [:create, :destroy]
+
 
  devise_for :admin_users, only: [:session, :password], :controllers => {
    sessions:      'admin_users/sessions'
  }
  
- get "admin_users/micropost"
- resources:admin_users, only:[:show,:index,:destroy,:edit,:update,:create,:new,]
-  
+  namespace :admin do
+    resources :admin_users
+    match '/public_on/:id', to: 'microposts#public_on',  via: 'patch', as: 'public_on'
+    match '/public_off/:id', to: 'microposts#public_off',  via: 'patch', as: 'public_off'
+    resources :microposts, except: [:new, :create, :show]
+    resources :users, except: [:new, :create, :show]
+  end
  
   
-  resources :microposts,    only: [:create, :destroy, :edit,:update]
+  resources :microposts,    only: [:create, :destroy, :edit, :update]
+  
+  
   resources :relationships, only: [:create, :destroy]
+  resources :contacts,      only: [:new, :create]
+  
+  
+
+  
+  match '/like_on', to: 'likes#like_on',  via: 'post', as: 'like_on'
+  match '/like_off/:id', to: 'likes#like_off',  via: 'delete', as: 'like_off'
+  
 
   root  'static_pages#home'
   

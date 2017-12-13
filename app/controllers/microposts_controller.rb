@@ -1,6 +1,7 @@
 class MicropostsController < ApplicationController
-  before_action :authenticate_user!, :except=>[:edit,:update]
+  before_action :authenticate_user!, :except=>[:edit,:update, :destroy, :public_on, :public_off ]
   before_action :correct_user,   only: :destroy
+  
   
   def create
     @micropost = current_user.microposts.build(micropost_params)
@@ -15,7 +16,11 @@ class MicropostsController < ApplicationController
 
   def destroy
     @micropost.destroy
-    redirect_to root_url
+    if admin_user_signed_in?
+      redirect_to admin_users_micropost_url
+    else
+      redirect_to root_url
+    end
   end
   
   def edit
@@ -32,18 +37,38 @@ class MicropostsController < ApplicationController
   end
   
   
+  
+  
+#micropostのpublicを公開非公開にする
+  def public_on
+    @micropost = Micropost.find(params[:id])
+    @micropost.update(public: true)
+  end
+
+  def public_off
+    @micropost = Micropost.find(params[:id])
+    @micropost.update(public: false)
+  end
+  
+  
+  
   private
 
     def micropost_params
      if admin_user_signed_in?
-      params.require(:micropost).permit(:content,:public)
+      params.require(:micropost).permit(:content, :picture, :public)
      else
-      params.require(:micropost).permit(:content)
+      params.require(:micropost).permit(:content, :picture,)
      end
     end
     
     def correct_user
-      @micropost = current_user.microposts.find_by(id: params[:id])
-      redirect_to root_url if @micropost.nil?
+      if admin_user_signed_in?
+        @micropost = Micropost.find_by(id: params[:id])
+      else
+        @micropost = current_user.microposts.find_by(id: params[:id])
+        redirect_to root_url if @micropost.nil?
+      end
     end
+    
 end

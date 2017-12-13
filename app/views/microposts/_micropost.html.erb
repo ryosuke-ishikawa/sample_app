@@ -1,5 +1,12 @@
 <li>
-  <span class="content"><%= micropost.content %></span>
+  <span class="content">
+    <%= micropost.content %>
+  </span>
+  <% if micropost.picture? %>
+    <div class ="image">
+      <%= image_tag micropost.picture %>
+    </div>
+  <% end %>
   <span class="timestamp">
     Posted <%= time_ago_in_words(micropost.created_at) %> ago.
   </span>
@@ -10,11 +17,17 @@
   
   <% end %>
   <% if admin_user_signed_in? %>
+    <span class="content">投稿者：<%= micropost.user.name %></span>
     <span class="content">投稿状態：<%= micropost.public %></span>
     <%= link_to "delete", micropost, method: :delete,
                                      data: { confirm: "You sure?" },
                                      title: micropost.content %>
-    <%= link_to "edit", edit_micropost_path(micropost) %></li>
-    
+    <span id="micropost_<%= micropost.id %>">
+      <%= render '/admin/microposts/public_button', micropost: micropost %>
+    </span>
+  <% else %>
+    <span id="like-button_<%= micropost.id %>" >
+    <%= render 'likes/like', micropost: micropost %>
+    </span>
   <% end %>
 </li>

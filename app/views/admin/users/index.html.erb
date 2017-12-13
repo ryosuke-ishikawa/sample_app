@@ -1,0 +1,22 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<%= will_paginate renderer: BootstrapPagination::Rails %>
+
+    <%= form_tag admin_users_path, :method => 'get' do %>
+     <%= label_tag :name, "ユーザー名での検索" %>
+     <%= text_field_tag :name,params[:name] %>
+     <%= label_tag :name, "投稿内容での検索" %>
+     <%= text_field_tag :content,params[:content] %>
+     <%= submit_tag "検索", :name => nil %>
+    <% end %>
+    
+    <ul class="users">    
+    <% @users.each do |user| %>
+      <li>
+      <%= gravatar_for user, size: 52 %>
+      <%= user.name %>
+    <% end %>
+    </ul>
+
+<%= will_paginate renderer: BootstrapPagination::Rails %>
